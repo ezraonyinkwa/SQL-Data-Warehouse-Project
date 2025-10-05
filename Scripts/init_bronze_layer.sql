@@ -3,6 +3,7 @@ The script checks if the table exist if it exist it deletes and creates another
 allowing one to edit the name of the columns
 */
 
+
 ---CREATE BRONZE LAYER TABLES FOR ERP & CRM
 IF OBJECT_ID ('bronze.crm_cust_info','U') IS NOT NULL
 DROP TABLE bronze.crm_cust_info;
@@ -30,6 +31,7 @@ prd_end_dt DATE,
 
 IF OBJECT_ID ('bronze.crm_cust_info','U') IS NOT NULL
 DROP TABLE bronze.crm_cust_info;
+
 CREATE TABLE bronze.crm_sales_details(
 sls_ord NVARCHAR (50),
 sls_prd NVARCHAR (50),
