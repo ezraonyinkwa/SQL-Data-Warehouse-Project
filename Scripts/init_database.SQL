@@ -1,3 +1,4 @@
+/*
 ==============================================================================
 Create Database 'DataWarehouse'
 ==============================================================================
@@ -8,6 +9,7 @@ WARNING:
         Running this script will drop the entire 'Datawarehouse' database if it exists.
         All data in the database will be permanently deleted.Proceed with caution ad ensure you
         have backups before running this script.
+*/
 
 USE master;
 GO
