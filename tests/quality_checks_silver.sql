@@ -1,6 +1,23 @@
--- QUALTY CHECKS
-
---(A.) bronze.crm_cust_info data cleaning 
+/*
+====================================================================================================
+Quality Checks
+=====================================================================================================
+Script Purpose:
+      This script performs various quality checks for data consistency, accuracy and 
+      standardization across the 'silver'schema.It includes checks for:
+      -Null or duplicate primary keys.
+      -Unwanted spaces in string fields.
+      -Data Standardization and consistency. 
+      -Invalid date ranges and orders
+      -Data Consistency between related fields
+Usage Notes:
+      -Run these checks after data loading silver layer
+      -Investigate and resolve any discrepancies found during the checks.
+======================================================================================================
+*/
+--===================================================================================================
+--(A.) Checking for bronze.crm_cust_info  
+--====================================================================================================
 
 --Check for nulls or duplicates in primary key
 SELECT cst_id,
@@ -23,8 +40,9 @@ FROM bronze.crm_cust_info;
 SELECT DISTINCT cst_marital_status
 FROM silver.crm_cust_info;
 
-
---- (B.) bronze.crm_prd_info data cleaning
+--=======================================================================================================
+--- (B.) Checking for bronze.crm_prd_info 
+--========================================================================================================
 SELECT TOP (1000) [prd_id]
       ,[prd_key]
       ,[prd_nm]
@@ -73,8 +91,9 @@ SELECT prd_key,prd_start_dt,
 CAST(LAG(prd_start_dt)OVER(PARTITION BY prd_key ORDER BY prd_start_dt)-1 AS DATE)AS prd_end_dt
 FROM bronze.crm_prd_info
 
-
--- (C.) bronze.sales_details data cleaning
+--===========================================================================================================
+-- (C.) Check for bronze.sales_details
+--===========================================================================================================      
 SELECT TOP (1000) [sls_ord]
       ,sls_prd
       ,sls_cust_id
@@ -118,9 +137,13 @@ OR sls_sales IS NULL OR sls_quantity IS NULL OR sls_price IS NULL
 OR sls_sales < 0 OR sls_quantity < 0 OR sls_price < 0
 ORDER BY sls_sales , sls_price,sls_quantity;
 
+--===================================================================================================
+--QUALITY CHECK FOR ERP DATA TABLES
+--===================================================================================================
 
---ERP DATA CLEANING
+--====================================================================================================
 --silver.erp_cust_az12 data cleaning
+--====================================================================================================
 SELECT 
 cid,
 bdate,
@@ -144,7 +167,9 @@ cid,
 cntry
 FROM bronze.erp_loc_a101
 
+--============================================================================================
 ---[silver].[erp_px_cat_g1v2] data cleaning
+--============================================================================================      
 SELECT *
 FROM bronze.erp_px_cat_g1v2
 WHERE id NOT IN (SELECT DISTINCT cat_id FROM silver.crm_prd_info)
